@@ -49,4 +49,14 @@ public class Player extends Entite {
         return g;
     }
 
+    public boolean collisionAvant(Bloc bloc){
+    	if(this.moveRight() == true){
+ 
+
+
+    		if(this.x + this.width < bloc.getX() || this.x + this.width > bloc.getX() + 5 || this.y + this.height <= bloc.getY() || this.y >= bloc.getY() + bloc.getHeight()){return false;}
+    	    else{return true;}
+    	}else{return false;}	    	
+    }
+
 }
