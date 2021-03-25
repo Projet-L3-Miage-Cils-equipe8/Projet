@@ -3,22 +3,16 @@ import java.awt.Frame;
 import java.awt.event.KeyListener;
 import java.awt.event.KeyEvent;
 
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowAdapter;
 
-import javax.swing.Timer;
-
-public class Deplacement extends Frame implements KeyListener, ActionListener {
+public class Deplacement extends Frame implements KeyListener {
 
     int vel; // Vitesse du personnage
     int amplitude;
 
     final int height = 1180;
     final int width = 660;
-    final Timer saut = new Timer(100, this);
     Player p;
     int cpt = 0;
     Stage stage;
@@ -33,216 +27,143 @@ public class Deplacement extends Frame implements KeyListener, ActionListener {
             }
         });
 
-        p = new Player(new Hitbox(30, 30),
-                new Coordonnee(stage.stageRep.get(stage.getIndexDepart()).getCoordonnee().getX() * stage.scale,
-                        stage.stageRep.get(stage.getIndexDepart()).getCoordonnee().getY() * stage.scale),
+        p = new Player(new Hitbox(1, 1),
+                new Coordonnee(stage.stageRep.get(stage.getIndexDepart()).getCoordonnee().getX(),
+                        stage.stageRep.get(stage.getIndexDepart()).getCoordonnee().getY()),
                 ToStringSelectionPlayer.nom, 10);
 
-        vel = stage.scale / 10;
+        vel = stage.scale / 50;
         amplitude = stage.scale;
     }
 
     // COLLISIONS
 
-    public void CollisionsUp(Player p, int vel, Timer saut, int cpt) {
-        if (p.getCoordonnee().getY() <= 30) {
-        } else if ((p.getCoordonnee().getY() > 30) && (p.getCoordonnee().getY() + p.getHitbox().getWidth() < width)) {
+    public void CollisionsUp(Player p, int vel, int cpt) {
 
-            if (stage.stageRep.get(stage.index - 27) instanceof Air) {
-                // for (int i = 0; i < 10; i++) {
-                // p.getCoordonnee().setY(p.getCoordonnee().getY() - vel);
-                // System.out.println(p.getCoordonnee().getX());
-                // repaint();
-                // }
-                // SAUT : 4 LIGNES DU DESSOUS
-                saut.setActionCommand("Saut");
-                saut.stop();
-                saut.start();
-                cpt = 0;
-                stage.index -= 27;
+        if (p.getCoordonnee().getY() <= 0) {
+            return;
+        } else if ((p.getCoordonnee().getY() > 0) && (p.getCoordonnee().getY() + p.getHitbox().getHeight() < height)) {
 
-                // Mettre tout ca dans une fonction ?
-                if (stage.itemRep.get(stage.index) == null) {
+            if (stage.stageRep.get(stage.index - 28) instanceof Grass) {
 
-                } else if (stage.itemRep.get(stage.index) instanceof Piece) {
-                    p.incrementScoreByX(1);
-                    System.out.println("piece");
+                p.moveUp(1);
+                System.out.println("haut");
+                stage.index -= 28;
 
-                } else if (stage.itemRep.get(stage.index) instanceof Piege) {
-                    p.coords.setX(stage.stageRep.get(stage.getIndexDepart()).getCoordonnee().getX() * stage.scale);
-                    p.coords.setY(stage.stageRep.get(stage.getIndexDepart()).getCoordonnee().getY() * stage.scale);
-                    stage.index = stage.getIndexDepart();
-                    System.out.println("piege");
-                    // METTRE LE SCORE A 0
-
-                } else if (stage.itemRep.get(stage.index) instanceof Flag) {
-                    // AFFICHER LE NIVEAU SUIVANT
-                    if (Enchainement.init == 2) {
-                        Enchainement.Stage2();
-                    } else if (Enchainement.init == 3) {
-                        Enchainement.Stage3();
-                    } else if (Enchainement.init == 4) {
-                        Enchainement.Stage4();
-                    }
-                }
-
-                // CollisionsDown(p, vel, width);
+                check_Actual_Bloc();
 
             } else {
-                System.out.println("MUR");
+                System.out.println("MUR EN HAUT");
                 // COLLISION MUR
             }
+
         }
+
     }
 
     public void CollisionsDown(Player p, int vel, int width) {
-        if (p.getCoordonnee().getY() + p.getHitbox().getWidth() >= width) {
 
-        } else if ((p.getCoordonnee().getY() > 30) && (p.getCoordonnee().getY() + p.getHitbox().getWidth() < width)) {
+        if (p.getCoordonnee().getY() + p.getHitbox().getHeight() >= width) {
+        } else if ((p.getCoordonnee().getY() + p.getHitbox().getWidth() < width)) {
 
-            if (stage.stageRep.get(stage.index + 27) instanceof Air) {
+            if (stage.stageRep.get(stage.index + 28) instanceof Grass) {
 
-                for (int i = 0; i < 10; i++) {
-                    p.getCoordonnee().setY(p.getCoordonnee().getY() + vel);
-                    System.out.println(p.getCoordonnee().getX());
-                    repaint();
-                }
-                stage.index += 27;
+                p.moveDown(1);
+                System.out.println("bas");
+                stage.index += 28;
 
-                // Mettre tout ca dans une fonction ?
-                if (stage.itemRep.get(stage.index) == null) {
-
-                } else if (stage.itemRep.get(stage.index) instanceof Piece) {
-                    p.incrementScoreByX(1);
-                    System.out.println("piece");
-
-                } else if (stage.itemRep.get(stage.index) instanceof Piege) {
-                    p.coords.setX(stage.stageRep.get(stage.getIndexDepart()).getCoordonnee().getX() * stage.scale);
-                    p.coords.setY(stage.stageRep.get(stage.getIndexDepart()).getCoordonnee().getY() * stage.scale);
-                    stage.index = stage.getIndexDepart();
-                    System.out.println("piege");
-                    // METTRE LE SCORE A 0
-
-                } else if (stage.itemRep.get(stage.index) instanceof Flag) {
-                    // AFFICHER LE NIVEAU SUIVANT
-                    if (Enchainement.init == 2) {
-                        Enchainement.Stage2();
-                    } else if (Enchainement.init == 3) {
-                        Enchainement.Stage3();
-                    } else if (Enchainement.init == 4) {
-                        Enchainement.Stage4();
-                    }
-                }
+                check_Actual_Bloc();
 
             } else {
-                System.out.println("MUR");
+                System.out.println("MUR EN BAS");
+                return;
                 // COLLISION MUR
             }
 
         }
+
     }
 
     public void CollisionsRight(Player p, int vel, int height) {
-        if (p.getCoordonnee().getX() + p.getHitbox().getHeight() >= height) {
+        if (p.getCoordonnee().getX() + p.getHitbox().getWidth() < 0) {
 
-        } else if ((p.getCoordonnee().getY() > 10) && (p.getCoordonnee().getX() + p.getHitbox().getHeight() < height)) {
+        } else if ((p.getCoordonnee().getX() + p.getHitbox().getWidth() < width)) {
 
-            if (stage.stageRep.get(stage.index + 1) instanceof Air) {
-                // for (int i = 0; i < 10; i++) {
-                // p.getCoordonnee().setX(p.getCoordonnee().getX() + vel);
-                // System.out.println(p.getCoordonnee().getX());
-                // repaint();
-                // }
-                // p.getCoordonnee().setX(p.getCoordonnee().getX() + vel);
-
-                saut.setActionCommand("Marche Droite");
-                saut.stop();
-                saut.start();
-                cpt = 0;
+            if (stage.stageRep.get(stage.index + 1) instanceof Grass) {
+                p.moveRight(1);
+                System.out.println("droite");
                 stage.index += 1;
 
-                // Mettre tout ca dans une fonction ?
-                if (stage.itemRep.get(stage.index) == null) {
-
-                } else if (stage.itemRep.get(stage.index) instanceof Piece) {
-                    p.incrementScoreByX(1);
-                    System.out.println("piece");
-
-                } else if (stage.itemRep.get(stage.index) instanceof Piege) {
-                    p.coords.setX(stage.stageRep.get(stage.getIndexDepart()).getCoordonnee().getX() * stage.scale);
-                    p.coords.setY(stage.stageRep.get(stage.getIndexDepart()).getCoordonnee().getY() * stage.scale);
-                    stage.index = stage.getIndexDepart();
-                    System.out.println("piege");
-                    // METTRE LE SCORE A 0
-
-                } else if (stage.itemRep.get(stage.index) instanceof Flag) {
-                    // AFFICHER LE NIVEAU SUIVANT
-                    if (Enchainement.init == 2) {
-                        Enchainement.Stage2();
-                    } else if (Enchainement.init == 3) {
-                        Enchainement.Stage3();
-                    } else if (Enchainement.init == 4) {
-                        Enchainement.Stage4();
-                    }
-
-                }
+                check_Actual_Bloc();
 
             } else {
-                System.out.println("MUR");
+                System.out.println("MUR A DROITE");
                 // COLLISION MUR
             }
         }
+
     }
 
     public void CollisionsLeft(Player p, int vel) {
-        if (p.getCoordonnee().getX() <= 10) {
+        if (p.getCoordonnee().getX() < 0) {
 
-        } else if ((p.getCoordonnee().getY() > 10) && (p.getCoordonnee().getX() + p.getHitbox().getHeight() < height)) {
+        } else if ((p.getCoordonnee().getX() > 0)) {
 
-            if (stage.stageRep.get(stage.index - 1) instanceof Air) {
-                // for (int i = 0; i < 10; i++) {
-                // p.getCoordonnee().setX(p.getCoordonnee().getX() - vel);
-                // System.out.println(p.getCoordonnee().getX());
-                // repaint();
-                // }
-                // p.getCoordonnee().setX(p.getCoordonnee().getX() - vel);
-
-                saut.setActionCommand("Marche Gauche");
-                saut.stop();
-                saut.start();
-                cpt = 0;
+            if (stage.stageRep.get(stage.index - 1) instanceof Grass) {
+                p.moveLeft(1);
+                System.out.println("gauche");
                 stage.index -= 1;
 
-                // Mettre tout ca dans une fonction ?
-                if (stage.itemRep.get(stage.index) == null) {
-
-                } else if (stage.itemRep.get(stage.index) instanceof Piece) {
-                    p.incrementScoreByX(1);
-                    System.out.println("piece");
-
-                } else if (stage.itemRep.get(stage.index) instanceof Piege) {
-                    p.coords.setX(stage.stageRep.get(stage.getIndexDepart()).getCoordonnee().getX() * stage.scale);
-                    p.coords.setY(stage.stageRep.get(stage.getIndexDepart()).getCoordonnee().getY() * stage.scale);
-                    stage.index = stage.getIndexDepart();
-                    System.out.println("piege");
-                    // METTRE LE SCORE A 0
-
-                } else if (stage.itemRep.get(stage.index) instanceof Flag) {
-                    // AFFICHER LE NIVEAU SUIVANT
-                    if (Enchainement.init == 2) {
-                        Enchainement.Stage2();
-                    } else if (Enchainement.init == 3) {
-                        Enchainement.Stage3();
-                    } else if (Enchainement.init == 4) {
-                        Enchainement.Stage4();
-                    }
-                }
+                check_Actual_Bloc();
 
             } else {
-                System.out.println("MUR");
+                System.out.println("MUR A GAUCHE");
                 // COLLISION MUR
             }
+
         }
+
+    }
+
+    public String check_Actual_Bloc() {
+        String s = new String();
+        // Mettre tout ca dans une fonction ?
+        if (stage.itemRep.get(stage.index) == null) { // Si aucun item
+            s = "";
+            return s;
+        } else if (stage.itemRep.get(stage.index) instanceof Piece) {
+            p.incrementScoreByX(1);
+            s = "piece";
+            stage.itemRep.set(stage.index, null); // Ramasser une piece
+            System.out.println("piece");
+            System.out.println("score : " + p.getScore());
+            return s;
+
+        } else if (stage.itemRep.get(stage.index) instanceof Piege) {
+
+            p.setCoord(stage.stageRep.get(stage.getIndexDepart()).getCoordonnee().getX(),
+                    stage.stageRep.get(stage.getIndexDepart()).getCoordonnee().getY());
+
+            stage.index = stage.getIndexDepart();
+            System.out.println("piege");
+            p.decrementScoreByX(p.getScore()); // METTRE LE SCORE A 0
+            System.out.println("score : " + p.getScore());
+            return "piege";
+
+        } else if (stage.itemRep.get(stage.index) instanceof Flag) {
+            // AFFICHER LE NIVEAU SUIVANT
+            if (Enchainement.init == 2) {
+                Enchainement.Stage2();
+            } else if (Enchainement.init == 3) {
+                Enchainement.Stage3();
+            } else if (Enchainement.init == 4) {
+                Enchainement.Stage4();
+            }
+            return "stage";
+        } else {
+            return "";
+        }
+
     }
 
     // EVENT
@@ -251,24 +172,29 @@ public class Deplacement extends Frame implements KeyListener, ActionListener {
         int keyCode = ke.getKeyCode();
         switch (keyCode) {
         case KeyEvent.VK_UP:
-            cpt = 0;
-            CollisionsUp(p, vel, saut, cpt);
+            CollisionsUp(p, vel, cpt);
             System.out.println("x = " + p.getCoordonnee().getX() + ", y = " + p.getCoordonnee().getY());
+            repaint();
             break;
+
         case KeyEvent.VK_DOWN:
             CollisionsDown(p, vel, width);
             System.out.println("x = " + p.getCoordonnee().getX() + ", y = " + p.getCoordonnee().getY());
+            repaint();
             break;
+
         case KeyEvent.VK_LEFT:
             CollisionsLeft(p, vel);
+            repaint();
             System.out.println("x = " + p.getCoordonnee().getX() + ", y = " + p.getCoordonnee().getY());
             break;
+
         case KeyEvent.VK_RIGHT:
             CollisionsRight(p, vel, height);
+            repaint();
             System.out.println("x = " + p.getCoordonnee().getX() + ", y = " + p.getCoordonnee().getY());
             break;
         }
-        repaint();
     }
 
     public void keyTyped(KeyEvent ke) {
@@ -277,48 +203,4 @@ public class Deplacement extends Frame implements KeyListener, ActionListener {
     public void keyReleased(KeyEvent ke) {
     }
 
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        if (e.getActionCommand().equals("Saut")) {
-            if (cpt <= stage.scale) {
-                if (cpt < stage.scale / 2) {
-                    p.getCoordonnee().setY(p.getCoordonnee().getY() - vel);
-                } else if (cpt >= stage.scale / 2) {
-                    p.getCoordonnee().setY(p.getCoordonnee().getY() + vel);
-                }
-                cpt++;
-                repaint();
-                System.out.println(vel);
-            }
-        }
-
-        if (e.getActionCommand().equals("Marche Droite")) {
-            if (cpt <= stage.scale) {
-                if (cpt < stage.scale / 2) {
-                    p.getCoordonnee().setX(p.getCoordonnee().getX() + vel);
-                }
-                cpt++;
-                repaint();
-                System.out.println(vel);
-            }
-        }
-
-        if (e.getActionCommand().equals("Marche Gauche")) {
-            if (cpt <= stage.scale) {
-                if (cpt < stage.scale / 2) {
-                    p.getCoordonnee().setX(p.getCoordonnee().getX() - vel);
-                }
-                cpt++;
-                repaint();
-                System.out.println(vel);
-            }
-        }
-
-    }
-
 }
-
-// Le code est inspiré de :
-// https://waytolearnx.com/2020/05/keylistener-java.html
-// https://youtu.be/9sKY5_3HtUc
-// https://waytolearnx.com/2020/05/comment-tracer-des-lignes-rectangles-et-cercles-dans-jframe.html

@@ -3,9 +3,9 @@
 import java.awt.Color;
 import java.awt.Graphics;
 
-public class Piege extends Item {
+public class FauxPiege extends Item {
 
-    public Piege(Coordonnee c) {
+    public FauxPiege(Coordonnee c) {
         super(c);
         // TODO Auto-generated constructor stub
     }
@@ -33,7 +33,6 @@ public class Piege extends Item {
 
         g.fillOval(28 + this.getCoordonnee().getX() * scale, 28 + this.getCoordonnee().getY() * scale, scale - 56,
                 scale - 56);
-
         return g;
     }
 }

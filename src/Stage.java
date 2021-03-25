@@ -5,8 +5,6 @@ import java.awt.Dimension;
 
 import java.util.List;
 
-import javax.swing.plaf.basic.BasicComboBoxUI.ItemHandler;
-
 import java.awt.Frame;
 import java.awt.Graphics;
 
@@ -18,6 +16,7 @@ public class Stage {
     public List<Bloc> stageRep;
     public List<Item> itemRep;
     public int index; // index du bloc ou se trouve le joueur
+    public boolean indexDispo = true;
     private int indexDepart;
 
     public Stage(File stage, File items) throws IOException {
@@ -94,6 +93,11 @@ public class Stage {
                         itemRep.add(item);
                         this.index = idx;
                         this.indexDepart = this.index;
+                        break;
+
+                    case ('5'):
+                        item = new FauxPiege(tempCord);
+                        itemRep.add(item);
                         break;
 
                     default:

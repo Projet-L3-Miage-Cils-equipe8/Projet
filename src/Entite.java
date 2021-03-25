@@ -22,12 +22,20 @@ public abstract class Entite {
         this.coords.setY(this.coords.getY() - my);
     }
 
+    public void moveDown(int my) {
+        this.coords.setY(this.coords.getY() + my);
+    }
+
     public Hitbox getHitbox() {
         return this.hitbox;
     }
 
     public Coordonnee getCoordonnee() {
         return this.coords;
+    }
+
+    public void setCoord(int x, int y) {
+        this.coords = new Coordonnee(x, y);
     }
 
 }

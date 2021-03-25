@@ -51,7 +51,8 @@ public class Player extends Entite {
             g.setColor(Color.BLACK);
         }
 
-        g.fillRect(coords.getX(), coords.getY(), getHitbox().getWidth(), getHitbox().getHeight());
+        g.fillRect(coords.getX() * scale, coords.getY() * scale, getHitbox().getWidth() * (scale),
+                getHitbox().getHeight() * (scale));
 
         return g;
     }
