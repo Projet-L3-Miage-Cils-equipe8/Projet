@@ -14,5 +14,13 @@ public class Medias { //banque de medias audios
 	MediaPlayer niv1 = new MediaPlayer(lvl1);
 	Media congrats = new Media(new File("Ressources/System Voice DOA3/Congratulations.mp3").toURI().toString());
 	MediaPlayer congratulations = new MediaPlayer(congrats);
+	Media perso = new Media(new File("Ressources/System Voice DOA3/Challenger Appears.mp3").toURI().toString());
+	MediaPlayer pers = new MediaPlayer(perso);	
+	Media lvl2 = new Media(new File("Ressources/Music/Boss Battle 1.mp3").toURI().toString());
+	MediaPlayer niv2 = new MediaPlayer(lvl2);
+	Media lvl3 = new Media(new File("Ressources/Music/Title Screen.mp3").toURI().toString());
+	MediaPlayer niv3 = new MediaPlayer(lvl3);
+	Media lvl4 = new Media(new File("Ressources/Music/Intro Music.wav").toURI().toString());
+	MediaPlayer niv4 = new MediaPlayer(lvl4);
 	
 }
