@@ -38,8 +38,25 @@ public class Enchainement {
         fen.setContentPane(fen.panel);
         bouton3.addActionListener(e -> {
             fen.dispose();
+            RegleJeu();
         });
 
+    }
+
+    public static void RegleJeu() {
+        Fenetre fen = new Fenetre("Règle du jeu", 0, 0, 0);
+        Texte text = new Texte(
+                "<html><center>Voici les regle du jeu :\n \n Le but de ce jeu est d'atteindre le drapeau, en ramassant le maximum de piece, sans percuter des pieges. Il y a deux types de piege :\n Si vous percuter un piege actif, vous recommencer le niveau et votre score retombe a 0. Les pieges inactifs, quant a eux, ils n\'ont aucune repercussion sur vous. Les deux types de pieges sont identiques, et a vous de trouver le bon chemin pour atteindre le drapeau ! ",
+                0, 100, 1000, 200, 25, "Cambria");
+        fen.add(text);
+
+        Bouton bouton1 = new Bouton("<html><center>Retour", 400, 450, 200, 60);
+        fen.panel.add(bouton1);
+        fen.setContentPane(fen.panel);
+        bouton1.addActionListener(e -> {
+            fen.dispose();
+            ChoixPerso();
+        });
     }
 
     public static void Stage1() {
