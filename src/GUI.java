@@ -21,7 +21,7 @@ public class GUI implements ActionListener{
 	GroupLayout g;
 	boolean son = false;
 	Music m = new Music();
-	
+	Enchainement mn = new Enchainement();
 	MouvementKeyListener ml;
 	
 	
@@ -111,21 +111,39 @@ public class GUI implements ActionListener{
 		}
 		if("jouer".equals(e.getActionCommand())) {
 			m.ready();
-			ml.show();
-			panel.setVisible(false);
+			//ml.show();
+			mn.ChoixPerso();
+		
+			
 			if(son) {
+				if(Enchainement.init==1) {
 				m.stop1();
 				m.lvl1();
-				
-			}
+				m.perso();
+			}else
+				if(Enchainement.init==2) {
+					m.stoplvl1();
+					m.lvl2();
+				}else
+					if(Enchainement.init==3) {
+						m.stoplvl2();
+						m.lvl3();
+					}
+					else
+						if(Enchainement.init==4) {
+							m.stoplvl3();
+							m.lvl4();
+						}
+			
+		}
 		}
 		
 		if (son) play_music.setEnabled(false);
-		else play_music.setEnabled(true);
+		else play_music.setEnabled(true); 
 		if(play_music.isEnabled()) stop_music.setEnabled(false);
 		else stop_music.setEnabled(true);
 		
-	}
-
 	
+
+	}
 }
