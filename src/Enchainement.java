@@ -89,12 +89,20 @@ public class Enchainement {
         }
     }
 
-    public static void Stage4() {
-        try {
-            Stage s = new Stage(new File("../Ressources/Niveau4.txt"), new File("../Ressources/Niveau4_objets.txt"));
-            s.toFrame().show();
-        } catch (IOException ioException) {
+    public static void TableauScore(Player p) {
+        Fenetre fen = new Fenetre("Tableau des scores", 0, 0, 0);
+        Texte text = new Texte("<html><center>Voici le tableau des scores", 250, 75, 500, 100, 50, "Cambria");
+        fen.add(text);
 
-        }
+        String resultat = "" + p.getScore();
+        Texte text2 = new Texte(resultat, 460, 250, 500, 100, 50, "Cambria");
+        fen.add(text2);
+
+        Bouton bouton1 = new Bouton("<html><center>Quitter", 400, 450, 200, 60);
+        fen.panel.add(bouton1);
+        fen.setContentPane(fen.panel);
+        bouton1.addActionListener(e -> {
+            fen.dispose();
+        });
     }
 }

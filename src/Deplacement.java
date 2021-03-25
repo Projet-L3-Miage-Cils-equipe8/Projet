@@ -153,11 +153,12 @@ public class Deplacement extends Frame implements KeyListener {
         } else if (stage.itemRep.get(stage.index) instanceof Flag) {
             // AFFICHER LE NIVEAU SUIVANT
             if (Enchainement.init == 2) {
-                Enchainement.Stage2();
+                Enchainement.TableauScore(p);
+                // Enchainement.Stage2();
             } else if (Enchainement.init == 3) {
                 Enchainement.Stage3();
             } else if (Enchainement.init == 4) {
-                Enchainement.Stage4();
+                Enchainement.TableauScore(p);
             }
             return "stage";
         } else {
